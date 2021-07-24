@@ -1,39 +1,71 @@
 let myLibrary = [];
-let index = 0;
 
-function Book(author, book, year){
+function Book(author, title, pages, read) {
     this.author = author;
-    this.book = book;
-    this.year = year;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
 }
 
-function addBookToLibrary(){
+function addBookToLibrary() {
     let author = document.getElementById("author").value;
-    let book = document.getElementById("book").value;
-    let year = document.getElementById("year").value;
-    let newBook = new Book(author, book, year)
-    console.log(newBook)
-    myLibrary[index] = newBook;
-    index++;
-    // document.getElementById("author").value=""
-    // document.getElementById("book").value=""
-    // document.getElementById("year").value=""
+    let title = document.getElementById("title").value;
+    let pages = document.getElementById("pages").value;
+    let read = $("#read").is(":checked") ? "true" : "false";
+    validateForm(author, title, pages);
+    myLibrary.push(new Book(author, title, pages, read));
+    showBookFromLibrary();
 }
 
-function showBookFromLibrary(){
-    document.getElementById("result").innerHTML = ""
-    for(let prop in myLibrary){
-        wrapData(myLibrary[prop]);
+function validateForm(author, title, pages) {
+    if (author === '' || title == null) {
+        alert("Author cannot be empty");
+    }
+    if (title === '' || title == null) {
+        alert("Title cannot be empty");
+    }
+    if (pages === '' || pages == null) {
+        alert("Number of pages cannot be empty");
     }
 }
 
-function wrapData(data){
-    document.getElementById("result").innerHTML+=
-        '<div class="card">'+
-        '<div class="container">'+
-        '<h4>Title:<i> '+data.book+'</i></h4>'+
-        '<p>Author: '+data.author+'</p>'+
-        '<p>Year: '+data.year+'</p>'+
-        '</div>'+
-        '</div>'
+function removeBookFromLibrary(title) {
+    let titleIndex = myLibrary.indexOf(title);
+    myLibrary.splice(titleIndex, 1);
+    showBookFromLibrary();
+}
+
+function updateBookInLibrary(book) {
+    let c = myLibrary[book.id];
+    c.read = !c.read;
+    console.log(c.read, myLibrary[book.id])
+}
+
+function showBookFromLibrary() {
+    document.getElementById("result").innerHTML = ""
+    for (let prop in myLibrary) {
+        wrapData(myLibrary[prop], prop);
+    }
+}
+
+function wrapData(data, prop) {
+    let status = data.read;
+
+    document.getElementById("result").innerHTML +=
+        '<div class="card">' +
+        '<h4 id=data.title >Title:<i> ' + data.title + '</i></h4>' +
+        '<p>Author: ' + data.author + '</p>' +
+        '<p>Pages: ' + data.pages + '</p>' +
+        '<p>Read: <input type=checkbox id="book_id" name=read onclick="updateBookInLibrary(this);"></p>' +
+        '<button id="deleteBook" onclick="removeBookFromLibrary(title)">Delete</button>' +
+        '</div>';
+
+    let checkbox_id = document.getElementById("book_id");
+    checkbox_id.id = prop;
+
+    if (status === 'true') {
+        document.getElementById(checkbox_id.id).setAttribute('checked', 'checked');
+    } else {
+        document.getElementById(checkbox_id.id).removeAttribute('checked');
+    }
 }
