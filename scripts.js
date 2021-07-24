@@ -12,7 +12,7 @@ function addBookToLibrary() {
     let title = document.getElementById("title").value;
     let pages = document.getElementById("pages").value;
     let read = $("#read").is(":checked") ? "true" : "false";
-    validateForm(author, title, pages);
+    validateForm(author, title, pages, read);
 }
 
 function validateForm(author, title, pages, read) {
