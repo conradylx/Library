@@ -13,19 +13,22 @@ function addBookToLibrary() {
     let pages = document.getElementById("pages").value;
     let read = $("#read").is(":checked") ? "true" : "false";
     validateForm(author, title, pages);
-    myLibrary.push(new Book(author, title, pages, read));
-    showBookFromLibrary();
 }
 
-function validateForm(author, title, pages) {
+function validateForm(author, title, pages, read) {
+    let errors = [];
     if (author === '' || title == null) {
-        alert("Author cannot be empty");
+        errors.push("Author cannot be empty");
     }
     if (title === '' || title == null) {
-        alert("Title cannot be empty");
+        errors.push("Title cannot be empty");
     }
     if (pages === '' || pages == null) {
-        alert("Number of pages cannot be empty");
+        errors.push("Number of pages cannot be empty");
+    }
+    if(errors.length === 0){
+        myLibrary.push(new Book(author, title, pages, read));
+        showBookFromLibrary();
     }
 }
 
